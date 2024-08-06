@@ -1,19 +1,49 @@
-// 웹앱 URL
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxwKmVmoz8ZjM2HlQOD8-6ejo6vDsHrIwCM9UdZir47a7Xpyeq0G_JFHDo4pEitOOoC/exec';
+async function fetchData() {
+    try {
+        // Fetch data from the web app
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzKMsCKJlrewGKigDpV81kVD7OQGv7u98raItSL890dNF-pa_uyqLpPUTIjJRz1Vddk/exec'); // 웹앱 URL로 교체
+        const data = await response.json();
 
-// Fetch API를 사용하여 웹앱에서 JSON 데이터 가져오기
-fetch(WEB_APP_URL)
-    .then(response => response.json())
-    .then(data => {
-        const container = document.getElementById('instagram-embeds');
-        data.forEach(row => {
-            const embedCode = row['임베드 코드'];
-            if (embedCode) {
-                const div = document.createElement('div');
-                div.classList.add('embed-container');
-                div.innerHTML = embedCode;
-                container.appendChild(div);
-            }
-        });
-    })
-    .catch(error => console.error('Error fetching data:', error));
+        // Update local storage
+        localStorage.setItem('instagramData', JSON.stringify(data));
+
+        // Update DOM with fetched data
+        updateDOM(data);
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+function updateDOM(data) {
+    const contentDiv = document.getElementById('content');
+    contentDiv.innerHTML = ''; // Clear previous content
+    data.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'embed-container';
+        div.innerHTML = item.embedCode;
+        contentDiv.appendChild(div);
+    });
+
+    // Load Instagram script
+    const script = document.createElement('script');
+    script.src = "//www.instagram.com/embed.js";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+}
+
+// Check for cached data
+document.addEventListener('DOMContentLoaded', () => {
+    const cachedData = localStorage.getItem('instagramData');
+    if (cachedData) {
+        // Use cached data for initial load
+        updateDOM(JSON.parse(cachedData));
+    } else {
+        // Fetch new data if no cache
+        fetchData();
+    }
+    
+    // Optionally, fetch new data to update cache in the background
+    fetchData();
+});
