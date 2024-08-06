@@ -37,7 +37,7 @@ function updateDOM(data) {
 function loadInstagramEmbedScript() {
     const existingScript = document.querySelector('script[src="//www.instagram.com/embed.js"]');
     if (existingScript) {
-        existingScript.remove(); 
+        existingScript.remove(); // Remove existing script to force re-initialization
     }
     const script = document.createElement('script');
     script.src = "//www.instagram.com/embed.js";
@@ -47,7 +47,7 @@ function loadInstagramEmbedScript() {
 
     script.onload = function() {
         if (window.instgrm) {
-            window.instgrm.Embeds.process();
+            window.instgrm.Embeds.process(); // Explicitly process all Instagram embeds
         }
     };
 }
