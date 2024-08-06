@@ -1,20 +1,16 @@
+// Fetch Instagram embed data and update local storage
 async function fetchData() {
     try {
-        // Fetch data from the web app
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzKMsCKJlrewGKigDpV81kVD7OQGv7u98raItSL890dNF-pa_uyqLpPUTIjJRz1Vddk/exec'); // 웹앱 URL로 교체
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzKMsCKJlrewGKigDpV81kVD7OQGv7u98raItSL890dNF-pa_uyqLpPUTIjJRz1Vddk/exec'); // Replace with your actual web app URL
         const data = await response.json();
-
-        // Update local storage
         localStorage.setItem('instagramData', JSON.stringify(data));
-
-        // Update DOM with fetched data
         updateDOM(data);
-
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 }
 
+// Update the DOM with the new Instagram embeds
 function updateDOM(data) {
     const contentDiv = document.getElementById('content');
     contentDiv.innerHTML = ''; // Clear previous content
@@ -25,7 +21,15 @@ function updateDOM(data) {
         contentDiv.appendChild(div);
     });
 
-    // Load Instagram script
+    loadInstagramEmbedScript(); // Load the Instagram embed script
+}
+
+// Load or reload the Instagram embed script
+function loadInstagramEmbedScript() {
+    const existingScript = document.querySelector('script[src="//www.instagram.com/embed.js"]');
+    if (existingScript) {
+        existingScript.remove(); // Remove existing script to reload it
+    }
     const script = document.createElement('script');
     script.src = "//www.instagram.com/embed.js";
     script.async = true;
@@ -33,17 +37,11 @@ function updateDOM(data) {
     document.body.appendChild(script);
 }
 
-// Check for cached data
+// Initial setup: use cached data or fetch new data
 document.addEventListener('DOMContentLoaded', () => {
     const cachedData = localStorage.getItem('instagramData');
     if (cachedData) {
-        // Use cached data for initial load
         updateDOM(JSON.parse(cachedData));
-    } else {
-        // Fetch new data if no cache
-        fetchData();
     }
-    
-    // Optionally, fetch new data to update cache in the background
-    fetchData();
+    fetchData(); // Always fetch to update cache and ensure fresh data
 });
