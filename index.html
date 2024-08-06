@@ -3,12 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Embed</title>
+    <title>Instagram Embeds</title>
+    <style>
+        .embed-container {
+            margin: 10px;
+            max-width: 540px;
+            min-width: 326px;
+        }
+    </style>
 </head>
 <body>
-    <!-- 여기서 구글 스프레드시트에서 복사한 임베드 코드를 붙여 넣으세요 -->
-    <div id="embed-container">
-      <!-- 이곳에 임베드 코드를 추가 -->
-    </div>
+    <h1>Instagram Embeds</h1>
+    <div id="content"></div>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbzKMsCKJlrewGKigDpV81kVD7OQGv7u98raItSL890dNF-pa_uyqLpPUTIjJRz1Vddk/exec'); // 웹앱 URL로 교체
+                const data = await response.json();
+
+                const contentDiv = document.getElementById('content');
+                data.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'embed-container';
+                    div.innerHTML = item.embedCode;
+                    contentDiv.appendChild(div);
+                });
+
+                // Instagram script
+                const script = document.createElement('script');
+                script.src = "//www.instagram.com/embed.js";
+                script.async = true;
+                script.defer = true;
+                document.body.appendChild(script);
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        fetchData();
+    </script>
 </body>
 </html>
