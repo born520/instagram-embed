@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fetchData() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwivZFkwuOZGxIaBSH0QXtgqjShBxx9cLfPc2DsZHQjoPytnBweREV7MBbc8R4InAUC/exec'); // Replace this with your actual web app URL
+        const response = await fetch('https://script.google.com/macros/s/AKfycbw8Z5qI-yDdjCP--XyDa5aeMzKxPCAL5j0jFDyeAnS5ZESZOsPaoKxrbqPEaTebXwN7Aw/exec'); // Replace this with your actual web app URL
         const data = await response.json();
         data.reverse(); // Assuming new links are added to the end and should be shown first
         localStorage.setItem('instagramData', JSON.stringify(data));
