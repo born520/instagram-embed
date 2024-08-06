@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fetchData() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzKMsCKJlrewGKigDpV81kVD7OQGv7u98raItSL890dNF-pa_uyqLpPUTIjJRz1Vddk/exec');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzKMsCKJlrewGKigDpV81kVD7OQGv7u98raItSL890dNF-pa_uyqLpPUTIjJRz1Vddk/exec'); // Replace this with your actual web app URL
         const data = await response.json();
         data.reverse(); // Assuming new links are added to the end and should be shown first
         localStorage.setItem('instagramData', JSON.stringify(data));
@@ -24,7 +24,6 @@ async function fetchData() {
 
 function updateDOM(data) {
     const contentDiv = document.getElementById('content');
-    contentDiv.innerHTML = ''; // Clear previous content
     data.forEach(item => {
         const div = document.createElement('div');
         div.className = 'embed-container';
@@ -37,7 +36,7 @@ function updateDOM(data) {
 function loadInstagramEmbedScript() {
     const existingScript = document.querySelector('script[src="//www.instagram.com/embed.js"]');
     if (existingScript) {
-        existingScript.remove(); // Remove existing script to force re-initialization
+        existingScript.remove();
     }
     const script = document.createElement('script');
     script.src = "//www.instagram.com/embed.js";
@@ -47,21 +46,21 @@ function loadInstagramEmbedScript() {
 
     script.onload = function() {
         if (window.instgrm) {
-            window.instgrm.Embeds.process(); // Explicitly process all Instagram embeds
+            window.instgrm.Embeds.process();
         }
     };
 }
 
 function setupLoadMoreButton(data) {
     const loadMoreButton = document.getElementById('load-more');
-    let currentIndex = 5; // Start after the first 5 already displayed
+    let currentIndex = 5;
 
     loadMoreButton.onclick = () => {
         const nextItems = data.slice(currentIndex, currentIndex + 5);
         updateDOM(nextItems);
         currentIndex += 5;
         if (currentIndex >= data.length) {
-            loadMoreButton.style.display = 'none'; // Hide the button if no more items to load
+            loadMoreButton.style.display = 'none';
         }
     };
 }
