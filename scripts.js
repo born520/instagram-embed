@@ -5,6 +5,7 @@ async function fetchData() {
         const data = await response.json();
         localStorage.setItem('instagramData', JSON.stringify(data));
         updateDOM(data);
+        loadInstagramEmbedScript();
     } catch (error) {
         console.error('Error fetching data:', error);
     }
@@ -20,28 +21,35 @@ function updateDOM(data) {
         div.innerHTML = item.embedCode;
         contentDiv.appendChild(div);
     });
-
-    loadInstagramEmbedScript(); // Load the Instagram embed script
 }
 
-// Load or reload the Instagram embed script
+// Load or reload the Instagram embed script and ensure initialization
 function loadInstagramEmbedScript() {
     const existingScript = document.querySelector('script[src="//www.instagram.com/embed.js"]');
     if (existingScript) {
-        existingScript.remove(); // Remove existing script to reload it
+        existingScript.remove(); // Remove existing script to force re-initialization
     }
     const script = document.createElement('script');
     script.src = "//www.instagram.com/embed.js";
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
+
+    script.onload = function () {
+        if (window.instgrm) {
+            window.instgrm.Embeds.process(); // Explicitly process all Instagram embeds
+        }
+    };
 }
 
-// Initial setup: use cached data or fetch new data
+// Check for cached data or fetch new data on page load
 document.addEventListener('DOMContentLoaded', () => {
     const cachedData = localStorage.getItem('instagramData');
     if (cachedData) {
         updateDOM(JSON.parse(cachedData));
+    } else {
+        fetchData(); // Fetch new data if no cached data is available
     }
-    fetchData(); // Always fetch to update cache and ensure fresh data
+    // Fetch new data periodically to update cache and DOM
+    setInterval(fetchData, 300000); // Update data every 5 minutes
 });
