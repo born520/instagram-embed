@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cachedData) {
         const data = JSON.parse(cachedData);
         console.log("Cached data:", data); // 데이터 로드 확인 로그
-        updateDOM(data.slice(0, 5)); // Initially load only the first 5 entries
+        updateDOM(data.slice(0, 5)); // 처음 5개의 항목만 로드
         setupLoadMoreButton(data);
     } else {
         fetchData();
@@ -12,12 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fetchData() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbyZSWbBG3uW9V1UzjZhwdMG0VDTosfV4sfZcV_dd7hHxUXFIU5IweNTnQ8jbysO6kEPAA/exec'); // 실제 웹 앱 URL로 교체
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwEZarp9VLKvblXuejuJme-x_arHlfPeS6QWSybr3ns_d7if5AVK055o_nRKvJD7p7tyw/exec'); // 웹앱 URL로 교체
         const data = await response.json();
         console.log("Fetched data:", data); // 데이터 페칭 확인 로그
-        data.reverse(); // Assuming new links are added to the end and should be shown first
+        data.reverse(); // 새로 추가된 링크가 처음에 보이도록 순서 변경
         localStorage.setItem('instagramData', JSON.stringify(data));
-        updateDOM(data.slice(0, 5)); // Initially load only the first 5 entries
+        updateDOM(data.slice(0, 5)); // 처음 5개의 항목만 로드
         setupLoadMoreButton(data);
     } catch (error) {
         console.error('Error fetching data:', error); // 오류 로그
@@ -26,23 +26,24 @@ async function fetchData() {
 
 function updateDOM(data) {
     const contentDiv = document.getElementById('content');
-    contentDiv.innerHTML = ''; // Clear previous content
+    contentDiv.innerHTML = ''; // 이전 내용 삭제
     data.forEach(item => {
         const div = document.createElement('div');
         div.className = 'embed-container';
-        div.innerHTML = item.embedCode; // embedCode를 그대로 HTML로 삽입
+        div.innerHTML = item.embedCode; // 임베드 코드를 그대로 HTML로 삽입
+        console.log("Embed Code:", item.embedCode); // 임베드 코드 확인
         contentDiv.appendChild(div);
     });
     loadInstagramEmbedScript();
 }
 
 function loadInstagramEmbedScript() {
-    const existingScript = document.querySelector('script[src="//www.instagram.com/embed.js"]');
+    const existingScript = document.querySelector('script[src="https://www.instagram.com/embed.js"]');
     if (existingScript) {
         existingScript.remove();
     }
     const script = document.createElement('script');
-    script.src = "//www.instagram.com/embed.js";
+    script.src = "https://www.instagram.com/embed.js"; // https 추가
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
