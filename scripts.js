@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fetchData() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbyZSWbBG3uW9V1UzjZhwdMG0VDTosfV4sfZcV_dd7hHxUXFIU5IweNTnQ8jbysO6kEPAA/exec'); // Replace this with your actual web app URL
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyZSWbBG3uW9V1UzjZhwdMG0VDTosfV4sfZcV_dd7hHxUXFIU5IweNTnQ8jbysO6kEPAA/exec'); // 실제 웹 앱 URL로 교체
         const data = await response.json();
         console.log("Fetched data:", data); // 데이터 페칭 확인 로그
         data.reverse(); // Assuming new links are added to the end and should be shown first
