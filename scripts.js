@@ -27,7 +27,7 @@ function updateDOM(data) {
     data.forEach(item => {
         const div = document.createElement('div');
         div.className = 'embed-container';
-        div.innerHTML = item.embedCode;
+        div.innerHTML = item.embedCode; // embedCode를 그대로 HTML로 삽입
         contentDiv.appendChild(div);
     });
     loadInstagramEmbedScript();
