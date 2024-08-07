@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fetchData() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbyjLR_JknPyxkXRp9haFDAx8hnqX1HbiFj2IOxqFG3SwR_yy5oPNlv7HOM3KhnDaiXORw/exec'); // 웹앱 URL로 교체
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwlIUewVs8t_l2XyPrsM5bKvkVeMLObntEFCVh2mlilHLsD9aX6KRp2NN-rhwqOLn-7/exec'); // 웹앱 URL로 교체
         const data = await response.json();
         console.log("Fetched data:", data); // 데이터 페칭 확인 로그
         data.reverse(); // 새로 추가된 링크가 처음에 보이도록 순서 변경
