@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cachedData = localStorage.getItem('instagramData');
     if (cachedData) {
         const data = JSON.parse(cachedData);
+        console.log("Cached data:", data); // 데이터 로드 확인 로그
         updateDOM(data.slice(0, 5)); // Initially load only the first 5 entries
         setupLoadMoreButton(data);
     } else {
@@ -13,17 +14,19 @@ async function fetchData() {
     try {
         const response = await fetch('https://script.google.com/macros/s/AKfycbyZSWbBG3uW9V1UzjZhwdMG0VDTosfV4sfZcV_dd7hHxUXFIU5IweNTnQ8jbysO6kEPAA/exec'); // Replace this with your actual web app URL
         const data = await response.json();
+        console.log("Fetched data:", data); // 데이터 페칭 확인 로그
         data.reverse(); // Assuming new links are added to the end and should be shown first
         localStorage.setItem('instagramData', JSON.stringify(data));
         updateDOM(data.slice(0, 5)); // Initially load only the first 5 entries
         setupLoadMoreButton(data);
     } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error); // 오류 로그
     }
 }
 
 function updateDOM(data) {
     const contentDiv = document.getElementById('content');
+    contentDiv.innerHTML = ''; // Clear previous content
     data.forEach(item => {
         const div = document.createElement('div');
         div.className = 'embed-container';
